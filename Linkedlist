@@ -1,0 +1,336 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<unistd.h>
+struct num
+{
+	char funct[10];
+	int number;
+	struct num* next; 
+}num;
+struct orderednum{
+	int number;
+	struct orderednum* next;
+}orderednum;
+
+int main(int argc, char const *argv[]){
+	if(access(argv[1],F_OK)==-1){
+		printf("error\n");
+	}
+	else{
+		FILE* fv =fopen(argv[1], "r");
+		int count = 1; 
+		char lines[100];
+		int linenum=0;
+		if(fv==NULL){
+			printf("error");
+		}
+		//int checker=getc(fv);
+		fscanf(fv, "%s", lines);
+		// printf("%s\n", lines);
+		
+		//int ans=strcmp(lines, EOF);
+	//	if (ans==0){
+		if(fscanf(fv, "%s", lines)==EOF){
+			printf("EMPTY");
+		}
+	//	while(ans!=0){
+		while(fscanf(fv, "%s", lines)!=EOF){
+			//checker=getc(fv);
+			fscanf(fv, "%s", lines);
+			// printf("%s\n", lines);
+			count+=1;
+		//ans=strcmp(lines, EOF);
+		}
+		//count=count/2;
+		//count-=1;
+		//struct num* list;
+		// printf("%d\n", count);
+		//struct num* list[i]= (struct num*) malloc(count*sizeof(struct num));
+		//list = (struct num*) malloc(count*sizeof(struct num)); 
+		//for(int i=0; i<count; i++)
+		for(int i = 0; i<count-1; i++){
+			//list[i]= (struct num*) malloc(sizeof(struct num));
+			//printf("%d\n", i);
+		}
+		// printf("%ld\n", sizeof(struct num)*count);
+		// printf("hi");
+		fclose(fv);
+
+
+		FILE *fp = fopen(argv[1], "r");
+		// for(int i = 0; i<count+1; i++){
+		// 	fscanf(fp, "%s", lines);
+		// 	printf("yoohoo");
+		// 	printf("%s\n", lines);
+		// 	fscanf(fp, "%d", &linenum);
+		// 	//printf("%d\n", list[i].funct[0]);
+		// 	printf("%d\n", linenum);
+		// 	printf("%d\n", i);
+		// 	for(int f=0; f<6; f++){
+		// 		//free(&list[i].funct[f]);
+		// 		printf("pls");
+		// 		list[i].funct[f]=lines[f];
+		// 		printf("avg");
+		// 		//strcpy(list[i].funct[f], lines[f]);
+		// 	}
+		// 	printf("mid");
+		// 	list[i].number=linenum;
+		// 	printf("overhere");
+		// 	list[i-1].next=&list[i];
+		// }
+		fscanf(fp, "%s", lines);
+		//printf("%s", lines);
+		fscanf(fp, "%d", &linenum);
+		//printf("hello from %d\n", linenum);
+		struct num *n1;
+		n1= malloc(sizeof(struct num));
+		strcpy(n1->funct, lines);
+		n1->number=linenum;
+		n1->next=NULL;
+		struct num* first=n1;
+		//&list[0];
+		struct num* prev=n1;
+		//&list[0];
+		
+		//while (lines!="EOF"){
+		for(int h = 0; h<count-1; h++){
+			struct num *new;
+			new=malloc(sizeof(struct num));
+			fscanf(fp, "%s", lines);
+			// printf("%s\n", lines);
+			fscanf(fp, "%d", &linenum);
+			// printf("%d\n", linenum);
+			strcpy(new->funct, lines);
+			new->number=linenum;
+			new->next=NULL;
+			prev->next=new;
+			prev=new;
+	}
+		// struct num *new;
+		// new=(struct num*) malloc(sizeof(struct num));
+		// new->number=-1;
+		// new->next=NULL;
+		// prev->next=new;
+		prev=first;
+		// do{
+		// //	printf("%d\n", prev->next->number);
+		// 	prev=prev->next;
+		// }while(prev->next!=NULL);
+		//printf("no");
+		// printf("===============================\n");
+		// printf("%d\n", count);
+		prev=first;
+	// 	do{
+	// 	//for(int i=0; i<count; i++){
+	// 		//printf("%d\n", i);
+	// 		//printf("%d\n", prev->number);
+	// //		printf("%s")
+	// 		if(prev->next->number!=-1){
+	// 			printf("%d\n", prev->number);
+	// 			printf("good");
+	// 			printf("%d", prev->next->number);
+	// 			prev=prev->next;
+		//		printf("yes");
+	// 		}
+	// 	}while(prev->next!=NULL);
+		//printf("great");
+		struct num* current=first;
+		//printf("good");
+		current = first;
+		while(strcmp(current->funct, "INSERT")!=0){
+			current=current->next;
+			if(current==NULL){
+				break;
+			}
+			//printf("hello");
+		}
+		if(current==NULL){
+			printf("EMPTY\n");
+		}
+		if(current!=NULL){
+		struct orderednum* new1;
+		new1=malloc(sizeof(struct orderednum));
+		new1->number=current->number;
+		new1->next=NULL;
+		current=current->next;
+		printf("%d ", new1->number);
+		printf("\n");
+		struct orderednum* ordnumone=new1;
+		struct orderednum* ordnumnow=new1;
+		int countager=0;
+			while(current!=NULL){
+				//printf("===============");
+				//if (strcmp("%s", "INSERT", current->funct)==0){
+				if (strcmp(current->funct, "INSERT")==0){
+					
+					struct orderednum* new2= malloc(sizeof(struct orderednum));
+					new2->number=current->number;
+					new2->next=NULL;
+					ordnumnow=ordnumone;
+					if(ordnumnow->number>new2->number){
+						new2->next=ordnumnow;
+						ordnumone=new2;
+						countager=2;
+					}
+					else{
+						do{
+							// printf("now num is %d\n", ordnumnow->number);
+							// printf("new2 num is %d\n", new2->number);
+							if (ordnumnow->number==new2->number){
+								free(new2);
+								new2=NULL;
+								countager=2;
+								break;
+							}
+							if(ordnumnow->next==NULL){
+								ordnumnow->next=new2;
+								ordnumnow=new2;
+								countager=2;
+								break;
+							}
+							if(ordnumnow->next->number>new2->number){
+								new2->next=ordnumnow->next;
+								ordnumnow->next=new2;
+								countager=2;
+								break;
+							}
+
+
+							
+							ordnumnow=ordnumnow->next;
+
+						}while(ordnumnow!=NULL);
+					}
+					// ordnumnow->next=new2;
+					// ordnumnow=new2;
+					// countager=2;
+					}
+				// printf("%d\n", strcmp(current->funct, "INSERT"));
+				// printf("%s\n", current->funct);
+				// printf("%d\n", ordnumnow->number);
+				// printf("%d\n", current->number);
+				if (strcmp(current->funct, "INSERT")==-1){
+					ordnumnow=ordnumone;
+					// printf("%d\n", ordnumnow->number);
+
+
+					//only for the first node
+
+
+					if(ordnumnow->number==current->number){
+						//struct orderednum* ordelete=ordnumnow;
+						if(ordnumnow->next==NULL){
+							free(ordnumnow);
+							printf("EMPTY\n");
+							while(strcmp(current->funct, "INSERT")==-1){
+								current=current->next;
+								if(current==NULL){
+									countager=3;
+									break;
+								}
+								//printf("hello");
+							}	
+							if(countager==3){
+								new1= malloc(sizeof(struct orderednum));
+								new1->number=0;
+								new1->next=NULL;
+								ordnumnow=new1;
+								ordnumone=new1;
+								countager=1;
+								break;
+							}
+							new1= malloc(sizeof(struct orderednum));
+							new1->number=current->number;
+							new1->next=NULL;
+							current=current->next;
+							printf("%d ", new1->number);
+							printf("\n");
+							ordnumone=new1;
+							ordnumnow=new1;	
+							countager=1;
+						}
+						else{
+							struct orderednum* ordelete=ordnumnow;
+							ordnumnow=ordnumnow->next;
+							ordnumone=ordnumnow;
+							free(ordelete);
+							countager=2;
+						}
+						
+					}
+					// printf("%d\n", current->number);
+					while(ordnumnow->next!=NULL){
+						countager=2;
+						// printf("%d\n", ordnumnow->number);
+						// printf("%d\n", current->number);
+						if (ordnumnow->next->number==current->number){
+							// printf("%d\n", ordnumnow->number);
+							// printf("%d\n", current->number);
+							struct orderednum* ordelete=ordnumnow->next;
+							if(ordnumnow->next->next==NULL){
+								ordnumnow->next=NULL;
+								free(ordelete);
+								countager=2;
+								break;
+							}
+							else{
+							ordnumnow->next=ordnumnow->next->next;
+							countager=2;
+							}
+							free(ordelete);
+						}
+						// if(ordnumnow->next==NULL && ordnumnow->number!=current->number){
+						// 	countager=2;
+						// }
+						ordnumnow=ordnumnow->next;	
+					}
+				}
+
+				if(countager==1){
+					countager=0;
+					//printf("hello");
+					continue;
+				}
+				current=current->next;
+				ordnumnow=ordnumone;
+				if(countager==2){
+					printf("%d ", ordnumnow->number);
+					countager=0;
+					while(ordnumnow->next!=NULL){
+						if(ordnumnow->next!=NULL){
+							ordnumnow=ordnumnow->next;
+						}
+						printf("%d ", ordnumnow->number);
+						
+					}
+					printf("\n");
+				}
+			}
+		ordnumnow=ordnumone;
+		//if(ordnumnow->next==NULL){
+			while(ordnumnow!= NULL){
+				struct orderednum *temp = ordnumnow;
+				//if(temp->next!=NULL){
+					ordnumnow = temp->next;
+				//}
+				free(temp);
+
+			}//while(ordnumnow->next != NULL);
+		//}
+		free(ordnumnow);
+		//while(current->next != NULL);
+		}
+			current=first;
+
+		while(current!= NULL){
+			struct num *temp = current;
+
+			current = temp->next;
+			free(temp);
+
+		}free(current);
+		
+	fclose(fp);
+	}
+}
