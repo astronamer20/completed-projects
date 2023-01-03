@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+int main(int argc, char** argv){
+	// printf("%s\n", argv[1]);
+	FILE *fp =fopen(argv[1], "r");
+	int lines;
+	//printf("testing");
+//printf("%c", &fp)
+	fscanf(fp, "%d", &lines);
+	int i = 0;
+	while(i<lines){
+		int c;
+		//printf("hi");
+		fscanf(fp, "%d", &c);
+		while(c>0){
+			//printf("hello");
+			//printf("me again");
+			int j=2;
+			while(j<c/2){
+				//printf("%d", j);
+				//printf("%d\n",c);
+				if(c%j==0){
+					c=-1;
+				}
+				//printf("%d\n", *g);
+				j++;
+			}
+			if(c!=-1){
+				if(c>0){
+					c=c/10;
+				}
+			}
+		}
+		if(c!=-1){
+			printf("yes\n");
+		}
+		if(c==-1){
+			printf("no\n");
+		}
+		//printf("%d\n", c);
+		i++;
+	} 
+}
