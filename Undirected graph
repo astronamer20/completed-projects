@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node{
+    char letter;
+    struct node* next;
+    // int* adjacent[]; 
+};
+int main(int argc, char const *argv[]){
+	// char lines[10];
+	int nodenum=0;
+	struct node* head;
+	head=malloc(sizeof(struct node));
+	FILE* fp= fopen(argv[1], "r");
+	fscanf(fp, "%d", &nodenum);
+	if(nodenum!=0){
+		fscanf(fp, "%c", &head->letter);
+		head->letter=65;
+		// head->adjacent=malloc(nodenum*sizeof(int));
+		head->next=NULL;
+	}
+	struct node* present=head;
+	for(int i=1; i<nodenum; i++){
+		char testascii=i%26+65;
+		struct node* new1;
+		new1=malloc(sizeof(struct node));
+		new1->letter=testascii;
+		// new1->adjacent=malloc(nodenum*sizeof(int));
+		new1->next=NULL;
+		present->next=new1;
+		present=new1;
+	}
+	present=head;
+	for(int i=0; i<nodenum; i++){
+		// printf("%c\n", present->letter);
+		present=present->next;
+	}
+	int** chartings;
+	chartings=malloc(nodenum*sizeof(int*));
+	for(int i=0; i<nodenum; i++){
+		chartings[i]=malloc(nodenum*sizeof(int));
+		chartings[i][i]=0;
+	}
+	char a;
+	char b;
+	char c;
+	char d; 
+	while(fscanf(fp, "%c", &a)!=EOF){
+		fscanf(fp, "%c", &b);
+		fscanf(fp, "%c", &c);
+		fscanf(fp, "%c", &d);
+		// printf("%d\n", b);
+		// printf("%c\n", b);
+		// printf("%d\n", d);
+		// printf("%c\n", d);
+		chartings[b-65][d-65]=1;
+		chartings[d-65][b-65]=1;
+		// chartings[a-%26]
+	}
+	FILE* fx= fopen(argv[2], "r");
+	// printf("good");
+	while(fscanf(fx, "%c", &a)!=EOF){
+		fscanf(fx, "%c", &b);
+		fscanf(fx, "%c", &c);
+		fscanf(fx, "%c", &d);
+		// printf("%d\n", a);
+		// printf("%c\n", a);
+		// printf("%d\n", c);
+		// printf("%c\n", c);
+		if(a-97==0){
+			for(int i=0; i<nodenum; i++){
+				if(chartings[c-65][i]==1){
+					printf("%c ", i+65);
+				}
+			}
+			printf("\n");
+		}
+		if(a-97==3){
+			int count=0;
+			for(int i=0; i<nodenum; i++){
+				if(chartings[c-65][i]==1){
+					count+=1;
+				}
+			}
+			printf("%d\n", count);
+		}
+	}
+	for(int i=0; i<nodenum; i++){
+		free(chartings[i]);	
+	}
+	free(chartings);
+	present=head;
+	for(int i=0; i<nodenum; i++){
+		struct node* temp=present;
+		present=present->next;
+		free(temp);
+	}
+}
