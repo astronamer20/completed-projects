@@ -1,0 +1,266 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct reference{
+	char letter[10];
+	struct reference* down;
+};
+struct node{
+	char letter[10];
+	struct node* next;
+	struct reference* down;
+	int indegree;
+	// int* adjacent[]; 
+};
+int main(int argc, char const *argv[]){
+	// char lines[10];
+	int nodenum=0;
+	struct node* head;
+	head=malloc(sizeof(struct node));
+	FILE* fp= fopen(argv[1], "r");
+	fscanf(fp, "%d", &nodenum);
+	if(nodenum!=0){
+		fscanf(fp, "%s", head->letter); 
+		head->indegree=0;
+		// fscanf(fp, "%s", &head->letter);
+		// head->letter=65;
+		// head->adjacent=malloc(nodenum*sizeof(int));
+		head->next=NULL;
+		head->down=NULL;
+	}
+	struct node* present=head;
+	for(int i=1; i<nodenum; i++){
+		// char testascii=i%26+65;
+		struct node* new1;
+		new1=malloc(sizeof(struct node));
+		fscanf(fp, "%s", new1->letter);
+		new1->indegree=0;
+		// fscanf(fp, "%s", &testascii);
+		// strcpy(new1->letter, testascii);
+		// new1->adjacent=malloc(nodenum*sizeof(int));
+		new1->next=NULL;
+		new1->down=NULL;
+		present->next=new1;
+		present=new1;
+	}
+	present=head;
+	for(int i=0; i<nodenum; i++){
+		// printf("%c\n", present->letter);
+		present=present->next;
+	}
+	struct node** chartings;
+	present=head;
+	chartings=malloc(nodenum*sizeof(struct node*));
+	for(int i=0; i<nodenum; i++){
+		// chartings[i]=malloc(nodenum*sizeof(struct node));
+		chartings[i]=present;
+		present=present->next;
+	}
+	// char a[21];
+	// char* b;
+	// char c;
+	// char* d; 
+	char b[15];
+	char d[15];
+	int e;
+	while(fscanf(fp, "%s", b)!=EOF){
+		fscanf(fp, "%s", d);
+		fscanf(fp, "%d", &e);
+		// fscanf(fp, "%c", &b);
+		// fscanf(fp, "%c", &c);
+		// fscanf(fp, "%c", &d);
+		// b=strtok(a, " ");
+		// d=strtok(a, " ");
+		// printf("%d\n", b);
+		// printf("%s\n", b);
+		// printf("%d\n", d);
+		// printf("%s\n", d);
+		for(int i=0; i<nodenum; i++){
+			// printf("b is: %s\n", b);
+			// printf("chartings[i]->letter is: %s\n",chartings[i]->letter);
+			if(strcmp(chartings[i]->letter, b)==0){
+				// printf("am i here");
+				int count=0;
+				// printf("%s\n", chartings[i]->letter);
+				if(chartings[i]->down==NULL){
+					// printf("hello\n");
+					struct reference* visited=malloc(sizeof(struct reference));
+					strcpy(visited->letter, d); 
+					visited->down=NULL;
+					chartings[i]->down=visited;
+				}
+				else{
+					if(strcmp(chartings[i]->down->letter, d)>=0){
+						struct reference* temp=chartings[i]->down;
+						struct reference* new4=malloc(sizeof(struct reference));
+						strcpy(new4->letter, d);
+						new4->down=NULL;
+						chartings[i]->down=new4;
+						new4->down=temp;
+						continue;
+					}
+					// printf("its me %s\n", chartings[i]->down->letter);
+					struct reference* visited=chartings[i]->down;
+					// printf("newa: %s\n", visited->letter);
+					if(visited->letter==d){
+							continue;
+						}
+					// printf("for comparison's sake: %d\n", strcmp(visited->down->letter, d));
+					while(visited->down!=NULL&&strcmp(visited->down->letter, d)<=0){
+						// printf("for comparison's sake: %d\n", strcmp(visited->down->letter, d));
+						// printf("visited is: %s", visited->letter);
+						visited=visited->down;
+
+						if(strcmp(visited->letter, d)==0){
+							count=1;
+							break;
+						}
+						
+					}
+					
+					if(count==1){
+						continue;
+					}
+					
+					struct reference* new4=malloc(sizeof(struct reference));
+					strcpy(new4->letter, d);
+					new4->down=NULL;
+					struct reference* temp=visited->down;
+					visited->down=new4;
+					new4->down=temp;
+				}
+			}
+			if(strcmp(chartings[i]->letter, d)==0){
+				chartings[i]->indegree+=1;
+			}
+			// 	int count=0;
+			// 	struct reference* visited=chartings[i]->down;
+			// 	if(chartings[i]->down==NULL){
+			// 		// printf("hello\n");
+			// 		struct reference* visited=malloc(sizeof(struct reference));
+            //     	strcpy(visited->letter, b); 
+			// 		visited->down=NULL;
+			// 		chartings[i]->down=visited;
+			// 	}
+			// 	else{
+			// 		if(strcmp(chartings[i]->down->letter, b)>=0){
+			// 			struct reference* temp=visited;
+			// 			struct reference* new4=malloc(sizeof(struct reference));
+			// 			strcpy(new4->letter, b);
+			// 			new4->down=NULL;
+			// 			chartings[i]->down=new4;
+			// 			new4->down=temp;
+			// 			continue;
+			// 		}
+			// 		// printf("for comparison's sake: %d\n", strcmp(visited->letter, b));
+			// 		while(visited->down!=NULL&&strcmp(visited->down->letter, b)<=0){
+			// 			// printf("for comparison's sake: %d\n", strcmp(visited->down->letter, b));
+			// 			if(strcmp(visited->letter, d)==0){
+			// 				count=1;
+			// 				break;
+			// 			}
+			// 			visited=visited->down;
+			// 		}
+			// 		if(count==1){
+			// 			continue;
+			// 		}
+			// 		struct reference* new4=malloc(sizeof(struct reference));
+			// 		strcpy(new4->letter, b);
+			// 		new4->down=NULL;
+			// 		struct reference* temp=visited->down;
+			// 		visited->down=new4;
+			// 		new4->down=temp;
+			// 	}
+			// 	// visited=malloc(sizeof(struct reference));
+			// 	// strcpy(visited->letter, d);
+			// 	// visited->down=NULL;
+			// }
+		// chartings[d-65][b-65]=1;
+		}
+		// chartings[a-%26]
+	}
+	FILE* fx= fopen(argv[2], "r");
+	// printf("good");
+	char f[15];
+	// char* f;
+	char g[15];
+ 	while(fscanf(fx, "%s", f)!=EOF){
+		fscanf(fx, "%s", g);
+		// printf("f is: %c\n", *f);
+		// printf("does f=a? %d\n", strcmp(f, "a"));
+		// printf("does f=d? %d\n", strcmp(f, "d"));
+		// f=strtok(e, " ");
+		// g=strtok(e, " ");
+		// fscanf(fx, "%c", b);
+		// fscanf(fx, "%s", &c);
+		// fscanf(fx, "%c", &d);
+		// printf("%d\n", a);
+		// printf("%c\n", a);
+		// printf("%d\n", c);
+		// printf("%c\n", c);
+		// printf("e is: %s\n", e);
+		// printf("g is: %c\n", *g);
+		
+		if(strcmp(f, "a")==0){
+			for(int i=0; i<nodenum; i++){
+				// printf("chartings[i] is: %s\n", chartings[i]->letter);
+				// printf("does g=chartings[i]? %d\n", strcmp(chartings[i]->letter, g));
+				if(strcmp(chartings[i]->letter, g)==0){
+					// printf("here\n");
+					struct reference* visited=chartings[i]->down;
+					// printf("%s\n", chartings[i]->down->letter);
+					while(visited!=NULL){
+						// printf("far\n");
+						printf("%s ", visited->letter);
+						visited=visited->down;
+					}
+					// printf("\n");
+				}
+				// if(chartings[c-65][i]==1){
+				// 	printf("%c ", i+65);
+				// }
+			}
+			printf("\n");
+		}
+		if(strcmp(f, "o")==0){
+			int count=0;
+			for(int i=0; i<nodenum; i++){
+				if(strcmp(chartings[i]->letter, g)==0){
+					struct reference* visited=chartings[i]->down;
+					while(visited!=NULL){
+						count+=1;
+						// printf("%s ", visited->letter);
+						visited=visited->down;
+					}
+				}
+				// if(chartings[c-65][i]==1){
+				// 	count+=1;
+				// }
+			}
+			printf("%d\n", count);
+		}
+		if(strcmp(f, "i")==0){
+			for(int i=0; i<nodenum; i++){
+				if(strcmp(chartings[i]->letter, g)==0){
+					printf("%d\n", chartings[i]->indegree);
+				}
+			}
+		}
+	}
+	for(int i=0; i<nodenum; i++){
+		struct reference* visited=chartings[i]->down;
+		while(visited!=NULL){
+			struct reference* temp=visited;
+			visited=visited->down;
+			free(temp);
+		}
+		free(chartings[i]);	
+	}
+	free(chartings);
+	// present=head;
+	// for(int i=0; i<nodenum; i++){
+	// 	struct node* temp=present;
+	// 	present=present->next;
+	// 	free(temp);
+	// }
+}
