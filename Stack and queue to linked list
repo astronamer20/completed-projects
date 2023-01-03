@@ -1,0 +1,125 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<unistd.h>
+struct num{
+	int number;
+	struct num* next; 
+}num;
+struct num* enqueue(struct num* head, struct num* newnode){
+	struct num* temp=head;
+	if (head==NULL){
+		head=newnode;
+		return newnode;
+	}
+	while(head->next!=NULL){
+		head=head->next;
+	}
+	head->next=newnode;
+	return temp;
+}
+struct num* push(struct num* head, struct num* newnode){
+	newnode->next=head;
+	return newnode;
+}
+struct num* pop(struct num* head){
+	struct num* temp= head; 
+	if(head==NULL){
+		return NULL;
+	}
+	if(head->next==NULL){
+		free(temp);
+		return(NULL);
+	}
+	else{
+	head=head->next;
+	free(temp);
+	return head;
+	}
+}
+struct num* nodenew(FILE* fp){
+	int lineman;
+	struct num* new1;
+	new1=malloc(sizeof(struct num));
+	new1->next=NULL;
+	fscanf(fp, "%d", &lineman);	
+	new1->number=lineman;
+	printf("%d\n",lineman);	
+	return new1;
+}
+int main(int argc, char const *argv[]){
+	if(access(argv[1],F_OK)==-1){
+		printf("error\n");
+	}
+	else{
+		char lines[10];
+		int count=0;
+		int lineman;
+		FILE* fp= fopen(argv[1], "r");
+		fscanf(fp, "%s", lines);
+		struct num* head;
+		if(strcmp(lines, "POP")!=0){
+			head=nodenew(fp);
+		}
+		else{
+			while(strcmp(lines, "POP")==0){
+				printf("EMPTY\n");
+				fscanf(fp, "%s", lines);
+			}
+			head=nodenew(fp);
+		}
+		while(fscanf(fp, "%s", lines)!=EOF){
+			//printf("%s\n", lines);
+			struct num* new1;
+			new1=malloc(sizeof(struct num));
+			new1->next=NULL;
+			if(strcmp(lines, "POP")!=0){
+				fscanf(fp, "%d", &lineman);
+				//printf("%d\n", lineman);
+				
+				new1->number=lineman;
+			}
+			if(strcmp(lines, "ENQUEUE")==0){
+				head= enqueue(head, new1);
+				count=1+count;
+				//printf("%d", count);
+			}
+			if(strcmp(lines, "PUSH")==0){
+				head= push(head, new1);
+				count=1+count;
+				//printf("%d", count);
+			}
+			if(strcmp(lines, "POP")==0){
+				head=pop(head);
+				if(count>=0){
+					count=count-1;
+				}
+				//printf("%d", count);
+				free(new1);
+				}
+			struct num* current=head; 
+			//printf("%d",current->number);
+			if(head==NULL){
+				printf("EMPTY");
+				// head=new1;
+				}
+			else{
+				while(current!=NULL){
+					printf("%d ", current->number);
+					current=current->next;
+				}
+			}
+			printf("\n");
+		}
+		if(count>=0){
+		while(head!=NULL){
+			struct num* temp=head;
+			head=head->next;
+			free(temp);
+		}
+		}
+		// if(head==NULL){
+		// 	free(head);
+		// }
+	}
+}
