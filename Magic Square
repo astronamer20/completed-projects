@@ -1,0 +1,94 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<unistd.h>
+int main(int argc, char const *argv[]){
+	int n;
+	sscanf(argv[1], "%d", &n);
+	if(n%2==0){
+		printf("error\n");
+	}
+	else{
+		
+		int **board;
+		board=malloc(sizeof(int*)*n);
+		for(int i=0; i<n; i++){
+			board[i]=malloc(sizeof(int)*n);
+		}
+		int column=(n/2);
+		int row=0;
+		// printf("%d", board[row][column]);
+		for(int i=1; i<=n*n; i++){
+
+			board[row][column]=i;
+			// printf("%d\n",board[row][column]);
+			// printf("%d\n",i);
+			// printf("%d \n",row);
+			// printf("%d	\n", column);
+			if(row==0){
+				row=n-1;
+			}
+			else{
+				row-=1;
+			}
+			if(column==n-1){
+				column=0;
+			}
+			else{
+				column+=1;
+			}
+			if(board[row][column]>=0){
+				if(row>=n-2){
+					row-=(n-2);
+				}
+				else{
+				row+=2;
+				}
+				if(column==0){
+					column=n-1;
+				}
+				else{
+				column-=1;
+				}
+			}
+		}
+		for(int i=0; i<n; i++){
+			for(int j=0; j<n; j++){
+				printf("%d	", board[i][j]);
+			}
+			printf("\n");
+		}
+		int sum=0;
+		for(int i=0; i<n; i++){
+			sum=0;
+			for(int j=0; j<n; j++){
+				sum+=board[i][j];
+			}
+			//printf("column sum is: %d\n", sum);
+		}
+		sum=0;
+		for(int i=0; i<n; i++){
+			sum=0;
+			for(int j=0; j<n; j++){
+				sum+=board[j][i];
+			}
+			// printf("row sum is: %d\n", sum);
+		}
+		sum=0;
+		for(int j=0; j<n; j++){
+			sum+=board[j][j];
+		}
+		// printf("down diag sum is: %d\n", sum);
+		sum=0;
+		for(int j=0; j<n; j++){
+			sum+=board[j][n-j-1];
+		}
+		// printf("up diag sum is: %d\n", sum);
+		
+		for(int i=0; i<n; i++){
+			free(board[i]);
+		}
+		free(board);
+	}
+	//printf("%d", n/2);
+}
